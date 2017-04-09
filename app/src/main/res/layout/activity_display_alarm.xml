@@ -45,7 +45,8 @@
 				android:orientation="vertical"
 				android:weightSum="1"
 				android:layout_alignParentTop="true"
-				android:layout_alignParentStart="true">
+				android:layout_alignParentStart="true"
+				android:layout_marginTop="11dp">
 
 				<RelativeLayout
 					android:layout_width="match_parent"
@@ -87,13 +88,40 @@
 						android:visibility="invisible"
 						/>
 				</RelativeLayout>
-
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/showDate"
+				    android:background="#f45234"
+				    android:textColor="#ffffff"
+				    android:text="date"
+				    android:layout_margin="10dp"
+				    android:padding="5dp"
+				    android:gravity="left"
+					/>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/showTime"
+					android:background="#5234f4"
+					android:textColor="#ffffff"
+					android:text="time"
+					android:layout_margin="10dp"
+					android:padding="5dp"
+					android:gravity="right"/>
+				</LinearLayout>
 				<DatePicker
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginTop="20dp"
 					android:layout_marginRight="20dp"
-					android:layout_marginLeft="20dp"/>
+					android:layout_marginLeft="20dp"
+					android:visibility="invisible"
+					android:id="@+id/dayPicker"/>
 
 				<TimePicker
 					android:layout_gravity="center"
@@ -102,6 +130,8 @@
 					android:layout_margin="20dp"
 				    android:layout_marginTop="10dp"
 				    android:layout_marginBottom="10dp"
+				    android:visibility="invisible"
+				    android:id="@+id/timePicker"
 					/>
 
 			</LinearLayout>

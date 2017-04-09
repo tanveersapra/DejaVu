@@ -7,9 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class DisplayAlarm extends AppCompatActivity {
 
@@ -53,6 +57,14 @@ public class DisplayAlarm extends AppCompatActivity {
 		edu.setVisibility(View.VISIBLE);
 		TextView tu=(TextView)findViewById(R.id.note_header);
 		tu.setVisibility(View.INVISIBLE);
+		TextView dateText=(TextView)findViewById(R.id.showDate);
+		dateText.setVisibility(View.INVISIBLE);
+		TextView timeText=(TextView)findViewById(R.id.showTime);
+		timeText.setVisibility(View.INVISIBLE);
+		DatePicker d=(DatePicker)findViewById(R.id.dayPicker);
+		d.setVisibility(View.VISIBLE);
+		TimePicker time=(TimePicker)findViewById(R.id.timePicker);
+		time.setVisibility(View.VISIBLE);
 		ed.setText(t.getText().toString());
 		edu.setText(tu.getText().toString());
 		if(view.getId()==R.id.save_button)
@@ -81,6 +93,27 @@ public class DisplayAlarm extends AppCompatActivity {
 		edu.setVisibility(View.INVISIBLE);
 		TextView tu=(TextView)findViewById(R.id.note_header);
 		tu.setVisibility(View.VISIBLE);
+		TextView dateText=(TextView)findViewById(R.id.showDate);
+		dateText.setVisibility(View.VISIBLE);
+		TextView timeText=(TextView)findViewById(R.id.showTime);
+		timeText.setVisibility(View.VISIBLE);
+		DatePicker d=(DatePicker)findViewById(R.id.dayPicker);
+		d.setVisibility(View.INVISIBLE);
+		TimePicker time=(TimePicker)findViewById(R.id.timePicker);
+		time.setVisibility(View.INVISIBLE);
+		String date=d.getDayOfMonth()+"-"+d.getMonth()+"-"+d.getYear();
+		dateText.setText(date);
+		String AM_PM ;
+		int hourOfDay=time.getHour();
+		if(hourOfDay < 12) {
+			AM_PM = "AM";
+
+		} else {
+			AM_PM = "PM";
+			hourOfDay-=12;
+		}
+		String timeValue=hourOfDay+":"+time.getMinute()+" "+AM_PM;
+		timeText.setText(timeValue);
 		t.setText(ed.getText().toString());
 		tu.setText(edu.getText().toString());
 		if(flag==1)
