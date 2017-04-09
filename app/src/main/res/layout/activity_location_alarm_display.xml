@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:context="app.com.example.android.locationreminder.location_alarm_display">
+	tools:context="app.com.example.android.locationreminder.DisplayLocation">
 <TextView
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"

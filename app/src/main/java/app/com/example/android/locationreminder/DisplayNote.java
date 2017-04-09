@@ -1,6 +1,7 @@
 package app.com.example.android.locationreminder;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 public class DisplayNote extends AppCompatActivity {
 
+	SQLiteDatabase notedb;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,9 +24,27 @@ public class DisplayNote extends AppCompatActivity {
 		TextView det=(TextView)findViewById(R.id.note_details);
 		String s=i.getStringExtra("note_head");
 		String d=i.getStringExtra("note_details");
+		String con=i.getStringExtra("where");
+
 		header.setText(s);
 		det.setText(d);
+		if(con.equals("new"))
+		{
+			edit_note(findViewById(R.id.save_button));
+		}
+		notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
+		notedb.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
+		//notedb.execSQL("insert into base(heading, content, type) values('Knock knock', 'Who is there?', 0);");
 	}
+	int flag=0;
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent i=new Intent(this,MainActivity.class);
+		startActivity(i);
+	}
+
 	public void edit_note(View view)
 	{
 
@@ -44,7 +64,8 @@ public class DisplayNote extends AppCompatActivity {
 			tu.setVisibility(View.INVISIBLE);
 			ed.setText(t.getText().toString());
 			edu.setText(tu.getText().toString());
-
+			if(view.getId()==R.id.save_button)
+				flag=1;
 	}
 	public void save_note(View view)
 	{
@@ -64,8 +85,16 @@ public class DisplayNote extends AppCompatActivity {
 		tu.setVisibility(View.VISIBLE);
 		t.setText(ed.getText().toString());
 		tu.setText(edu.getText().toString());
-
+		if(flag==1)
+		{
+			String contentdetails=ed.getText().toString();
+			String Contentheading=edu.getText().toString();
+			notedb.execSQL("insert into base(heading, content, type) values('"+Contentheading+"', '"+contentdetails+"', 1);");
+			//Write code to add new note onto the database
+			flag=0;
+		}
 	}
+
 	public void delete_note(View view)
 	{
 

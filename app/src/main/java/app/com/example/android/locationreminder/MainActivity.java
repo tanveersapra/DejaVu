@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
+        this.registerForContextMenu(fab);
         SQLiteDatabase notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
         notedb.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
         //notedb.execSQL("insert into base(heading, content, type) values('Knock knock', 'Who is there?', 0);");
@@ -74,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        if(v.getId()==R.id.fab)
+        {
+            this.getMenuInflater().inflate(R.menu.contextual_menu,menu);
+        }
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -88,10 +101,45 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onContextItemSelected(final MenuItem item) {
+    int selectedItemID=item.getItemId();
+        Intent i;
+        String s="New Note";
+        String d="Add Description";
+        switch(selectedItemID)
+        {
+            case R.id.type1:
+                i=new Intent(this,DisplayNote.class);
+                i.putExtra("note_head", s);
+                i.putExtra("note_details", d);
+                i.putExtra("where","new");
+                startActivity(i);
+                break;
+
+            case  R.id.type2:
+                i = new Intent(this, DisplayLocation.class);
+                i.putExtra("note_head", s);
+                i.putExtra("note_details", d);
+	            i.putExtra("where","new");
+                startActivity(i);
+                break;
+            case R.id.type3:
+                i = new Intent(this, DisplayAlarm.class);
+                i.putExtra("note_head", s);
+                i.putExtra("note_details", d);
+	            i.putExtra("where","new");
+                startActivity(i);
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
     public void new_note(View view) {
         //Toast.makeText(this,"You clicked on the plus sign",Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, new_note_adder.class);
-        startActivity(i);
+        view.showContextMenu();
+//        Intent i = new Intent(this, DisplayAlarm.class);
+//        startActivity(i);
     }
 
 }

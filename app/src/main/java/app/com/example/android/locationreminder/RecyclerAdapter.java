@@ -51,11 +51,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 					i = new Intent(context, DisplayNote.class);
 					i.putExtra("note_head", s);
 					i.putExtra("note_details", d);
+					i.putExtra("where","list");
 				}
 				else{
-					i = new Intent(context, location_alarm_display.class);
+					i = new Intent(context, DisplayLocation.class);
 					i.putExtra("note_head", s);
 					i.putExtra("note_details", d);
+					i.putExtra("where","list");
 				}
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(i);
