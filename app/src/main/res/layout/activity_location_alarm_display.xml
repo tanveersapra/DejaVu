@@ -8,21 +8,34 @@
 	tools:context="app.com.example.android.locationreminder.DisplayLocation">
 
 	<TextView
-		android:id="@+id/Heading"
+		android:id="@+id/Location"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="16dp"
+		android:layout_marginTop="15dp"
+		android:text="Using: "
+		android:visibility="invisible"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/ContentEdit" />
+
+	<TextView
+		android:id="@+id/Heading"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="8dp"
+		android:layout_marginLeft="16dp"
 		android:layout_marginRight="8dp"
+		android:layout_marginStart="16dp"
 		android:layout_marginTop="16dp"
 		android:text="Heading"
 		android:textAlignment="center"
+		android:textAllCaps="true"
 		android:textAppearance="@android:style/TextAppearance.Material.Headline"
+		android:textStyle="bold"
+		app:layout_constraintHorizontal_bias="0.487"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		android:layout_marginStart="16dp"
-		android:layout_marginEnd="8dp"
-		app:layout_constraintHorizontal_bias="0.487" />
+		app:layout_constraintTop_toTopOf="parent" />
 
 	<TextView
 		android:id="@+id/Content"
@@ -30,7 +43,6 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="8dp"
 		android:text="Content"
-		android:textAlignment="textStart"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/Heading" />
@@ -69,7 +81,7 @@
 		android:id="@+id/ContentEdit"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="8dp"
+		android:layout_marginTop="11dp"
 		android:contentDescription="Content"
 		android:ems="10"
 		android:inputType="textMultiLine"
@@ -98,4 +110,20 @@
 			android:text="Use current location"
 			android:visibility="invisible" />
 	</RadioGroup>
+
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/floatingActionButton2"
+		android:layout_width="57dp"
+		android:layout_height="50dp"
+		android:layout_marginBottom="16dp"
+		android:layout_marginRight="16dp"
+		android:clickable="true"
+		android:onClick="saver"
+		app:backgroundTint="@color/colorPrimary"
+		app:elevation="22dp"
+		app:fabSize="mini"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:rippleColor="@android:color/holo_blue_bright"
+		app:srcCompat="@android:drawable/ic_menu_save" />
 </android.support.constraint.ConstraintLayout>
