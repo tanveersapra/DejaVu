@@ -1,4 +1,8 @@
 <resources>
 	<string name="app_name">LocationReminder</string>
 	<string name="action_settings">Settings</string>
+	<string name="doodle_alert">Doodle Alert</string>
+	<string name="doodle_found">There is a Google doodle today!!</string>
+	<string name="no_doodle">No Google doodle today.</string>
+	<string name="connection_error">Connection error.</string>
 </resources>
