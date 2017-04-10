@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
 	Context context;
-	String[] note_names, note_summary;
+	String[] note_names, note_summary ;
 	int [] note_type;
 
 
@@ -36,7 +36,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 	@Override
 	public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
 		holder.tx_note_name.setText(note_names[position]);
-		holder.tx_note_summary.setText(note_summary[position]);
+		String cont=note_summary[position];
+		if(cont.length() >30) {
+			cont = cont.substring(0,30) + "...";
+		}
+
+		holder.tx_note_summary.setText(cont);
 		holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -53,12 +58,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 					i.putExtra("note_details", d);
 					i.putExtra("where","list");
 				}
-				else{
+				else if(type==3){
 					i = new Intent(context, DisplayLocation.class);
 					i.putExtra("note_head", s);
 					i.putExtra("note_details", d);
 					i.putExtra("where","list");
 				}
+				else
+				{
+					i = new Intent(context, DisplayAlarm.class);
+					i.putExtra("note_head", s);
+					i.putExtra("note_details", d);
+					i.putExtra("where","list");
+				}
+
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(i);
 			}

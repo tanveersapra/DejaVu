@@ -1,10 +1,12 @@
 package app.com.example.android.locationreminder;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         this.registerForContextMenu(fab);
         SQLiteDatabase notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
         notedb.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
+        notedb.execSQL("create table if not exists alarm(id integer foreign key references base(id), Date date, hour integer, minutes integer);");
         //notedb.execSQL("insert into base(heading, content, type) values('Knock knock', 'Who is there?', 0);");
         Cursor c = notedb.rawQuery("select heading, content, type from base;", null);
         String[] Heading = new String[c.getCount()];
@@ -48,13 +51,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Heading[i] = c.getString(0);
-            String cont = c.getString(1);
-            if(cont.length() >255) {
-                Content[i] = cont.substring(0, 255) + "...";
-            }
-            else{
-                Content[i] = cont;
-            }
+	        Content[i] = c.getString(1);
+
             Type[i] = c.getInt(2);
         }
 
@@ -142,4 +140,20 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
     }
 
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+				.setMessage("Are you sure?")
+				.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						Intent intent = new Intent(Intent.ACTION_MAIN);
+						intent.addCategory(Intent.CATEGORY_HOME);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						finish();
+					}
+				}).setNegativeButton("no", null).show();
+	}
 }
