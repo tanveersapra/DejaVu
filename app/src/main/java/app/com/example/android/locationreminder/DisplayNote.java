@@ -107,8 +107,8 @@ public class DisplayNote extends AppCompatActivity {
 
 	public void delete_note(View view) {
 
-		Toast.makeText(this, "Deleting only in edit mode", Toast.LENGTH_SHORT).show();
-		//Write code here to delete
+		Toast.makeText(this, "The Item has been deleted", Toast.LENGTH_SHORT).show();
+		notedb.execSQL("delete from base where id='"+id+"';");
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 

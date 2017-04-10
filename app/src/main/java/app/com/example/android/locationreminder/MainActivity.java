@@ -32,14 +32,15 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		this.registerForContextMenu(fab);
-		SQLiteDatabase notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
+		final SQLiteDatabase notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
 		notedb.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
-		notedb.execSQL("create table if not exists alarm(id integer,  Date date, hour integer, minutes integer, foreign key(id) references base(id));");
+		notedb.execSQL("create table if not exists alarm(id integer,  Date date, hour integer, minutes integer, foreign key(id) references base(id)on delete cascade);");
+		
 		Cursor c = notedb.rawQuery("select heading, content, type,id from base;", null);
 		String[] Heading = new String[c.getCount()];
 		String[] Content = new String[c.getCount()];
 		int[] Type = new int[c.getCount()];
-		String[] id = new String[c.getCount()];
+		final String[] id = new String[c.getCount()];
 		for (int i = 0; i < c.getCount(); i++) {
 			if (i == 0) {
 				c.moveToFirst();
@@ -60,11 +61,52 @@ public class MainActivity extends AppCompatActivity {
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setAdapter(adapter);
+		SwipeableRecyclerViewTouchListener swipeTouchListener =
+				new SwipeableRecyclerViewTouchListener(recyclerView,
+						new SwipeableRecyclerViewTouchListener.SwipeListener() {
+
+							public boolean canSwipe(int position) {
+								return true;
+							}
+
+							@Override
+							public boolean canSwipeLeft(final int position) {
+								return true;
+							}
+
+							@Override
+							public boolean canSwipeRight(final int position) {
+								return true;
+							}
+
+							@Override
+							public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+								for (int position : reverseSortedPositions) {
+									String removableID=id[position];
+									notedb.execSQL("delete from base where id='"+removableID+"';");
+									adapter.notifyItemRemoved(position);
+								}
+								adapter.notifyDataSetChanged();
+							}
+
+							@Override
+							public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+								for (int position : reverseSortedPositions) {
+									String removableID=id[position];
+									notedb.execSQL("delete from base where id='"+removableID+"';");
+									adapter.notifyItemRemoved(position);
+								}
+								adapter.notifyDataSetChanged();
+							}
+						});
+
+		recyclerView.addOnItemTouchListener(swipeTouchListener);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
 		}
+		startService(new Intent(this, ListenerService.class));
 	}
 
 	@Override
