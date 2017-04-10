@@ -52,12 +52,12 @@ public class DisplayAlarm extends AppCompatActivity {
 			timePicker.setHour(hour);
 			timePicker.setMinute(minutes);
 			DatePicker d = (DatePicker) findViewById(R.id.dayPicker);
-			int ddate=Integer.parseInt(date.substring(0,2));
-			int dmonth=Integer.parseInt(date.substring(3,5));
-			int year=Integer.parseInt(date.substring(6));
+			String ddate=(date.substring(8));
+			String dmonth=(date.substring(5,7));
+			String dyear=(date.substring(0,4));
 			Log.d("ddate",ddate+"");
 			Log.d("dmonth",dmonth+"");
-			Log.d("dyear",year+"");
+			Log.d("dyear",dyear+"");
 			String AM_PM;
 			if (hour > 12) {
 				AM_PM = "PM";
@@ -67,6 +67,7 @@ public class DisplayAlarm extends AppCompatActivity {
 			}
 			resultSet.close();
 			time = hour + ":" + minutes + " " + AM_PM;
+			date=ddate+"-"+dmonth+"-"+dyear;
 		}
 		TextView dateText = (TextView) findViewById(R.id.showDate);
 		TextView timeText = (TextView) findViewById(R.id.showTime);
@@ -138,14 +139,14 @@ public class DisplayAlarm extends AppCompatActivity {
 		if (dd <= 9) {
 			day = "0" + Integer.toString(dd);
 		} else day = "" + Integer.toString(dd);
-		int md = d.getMonth();
+		int md = d.getMonth()+1;
 		String dbmonth;
 		if (md <= 9)
 			dbmonth = "0" + Integer.toString(md);
 		else
 			dbmonth = "" + Integer.toString(md);
 
-		String dbdate = day + "-" + dbmonth + "-" + d.getYear();
+		String dbdate = d.getYear()+ "-" + dbmonth + "-" +day  ;
 		dateText.setText(dbdate);
 		String AM_PM;
 		int hourOfDay = time.getHour();
