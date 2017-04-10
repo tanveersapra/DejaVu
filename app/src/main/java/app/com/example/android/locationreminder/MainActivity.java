@@ -32,26 +32,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         this.registerForContextMenu(fab);
         SQLiteDatabase notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
         notedb.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
-        notedb.execSQL("create table if not exists alarm(id integer foreign key references base(id), Date date, hour integer, minutes integer);");
         //notedb.execSQL("insert into base(heading, content, type) values('Knock knock', 'Who is there?', 0);");
         Cursor c = notedb.rawQuery("select heading, content, type from base;", null);
         String[] Heading = new String[c.getCount()];
         String[] Content = new String[c.getCount()];
         int[] Type = new int[c.getCount()];
-        for (int i = 0; i < c.getCount(); i++){
-            if(i == 0){
+        for (int i = 0; i < c.getCount(); i++) {
+            if (i == 0) {
                 c.moveToFirst();
-            }
-            else{
+            } else {
                 c.moveToNext();
             }
 
             Heading[i] = c.getString(0);
-	        Content[i] = c.getString(1);
+            Content[i] = c.getString(1);
 
             Type[i] = c.getInt(2);
         }
@@ -76,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenu.ContextMenuInfo menuInfo) {
-        if(v.getId()==R.id.fab)
-        {
-            this.getMenuInflater().inflate(R.menu.contextual_menu,menu);
+        if (v.getId() == R.id.fab) {
+            this.getMenuInflater().inflate(R.menu.contextual_menu, menu);
         }
         super.onCreateContextMenu(menu, v, menuInfo);
 
@@ -101,32 +98,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(final MenuItem item) {
-    int selectedItemID=item.getItemId();
+        int selectedItemID = item.getItemId();
         Intent i;
-        String s="New Note";
-        String d="Add Description";
-        switch(selectedItemID)
-        {
+        String s = "New Note";
+        String d = "Add Description";
+        switch (selectedItemID) {
             case R.id.type1:
-                i=new Intent(this,DisplayNote.class);
+                i = new Intent(this, DisplayNote.class);
                 i.putExtra("note_head", s);
                 i.putExtra("note_details", d);
-                i.putExtra("where","new");
+                i.putExtra("where", "new");
                 startActivity(i);
                 break;
 
-            case  R.id.type2:
+            case R.id.type2:
                 i = new Intent(this, DisplayLocation.class);
                 i.putExtra("note_head", s);
                 i.putExtra("note_details", d);
-	            i.putExtra("where","new");
+                i.putExtra("where", "new");
                 startActivity(i);
                 break;
             case R.id.type3:
                 i = new Intent(this, DisplayAlarm.class);
                 i.putExtra("note_head", s);
                 i.putExtra("note_details", d);
-	            i.putExtra("where","new");
+                i.putExtra("where", "new");
                 startActivity(i);
                 break;
         }
@@ -140,20 +136,20 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
     }
 
-	@Override
-	public void onBackPressed() {
-		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-				.setMessage("Are you sure?")
-				.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure?")
+                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-						intent.addCategory(Intent.CATEGORY_HOME);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-						finish();
-					}
-				}).setNegativeButton("no", null).show();
-	}
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("no", null).show();
+    }
 }
