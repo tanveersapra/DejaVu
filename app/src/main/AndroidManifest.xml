@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.com.example.android.locationreminder">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,13 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayNote"></activity>
-        <activity android:name=".DisplayLocation"></activity>
-        <activity android:name=".DisplayAlarm"></activity>
-    </application>
+        <activity android:name=".DisplayNote" />
+        <activity android:name=".DisplayLocation" />
+        <activity android:name=".DisplayAlarm" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+        <service
+            android:name=".ListenerService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+    </application>
 
 </manifest>

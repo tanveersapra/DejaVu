@@ -66,6 +66,11 @@ public class DisplayLocation extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+        String con=i.getStringExtra("where");
+        if(con.equals("new")) {
+            edit(fab);
+        }
+
     }
 
     public void edit(View v) {
@@ -134,6 +139,17 @@ public class DisplayLocation extends AppCompatActivity {
         val.put("lat", lc.getLatitude());
         val.put("long", lc.getLongitude());
         db.insert("loc", null, val);
-        recreate();
+        lm.removeUpdates(lListener);
+
+        HeadView.setVisibility(View.VISIBLE);
+        ContentView.setVisibility(View.VISIBLE);
+        Locat.setVisibility(View.VISIBLE);
+        HeadEdit.setVisibility(View.INVISIBLE);
+        ContentEdit.setVisibility(View.INVISIBLE);
+        rb1.setVisibility(View.INVISIBLE);
+        fab.setVisibility(View.VISIBLE);
+        fab2.setVisibility(View.INVISIBLE);
+        HeadView.setText(HeadEdit.getText());
+        ContentView.setText(ContentEdit.getText());
     }
 }
