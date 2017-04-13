@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.R.attr.id;
+import static app.com.example.android.locationreminder.R.id.fab;
 
 public class DisplayNote extends AppCompatActivity {
 	String id;
@@ -31,8 +33,8 @@ public class DisplayNote extends AppCompatActivity {
 		String d = i.getStringExtra("note_details");
 		String con = i.getStringExtra("where");
 		id = "";
-		header.setText(s);
-		det.setText(d);
+		header.setHint(s);
+		det.setHint(d);
 		if (con.equals("new")) {
 			edit_note(findViewById(R.id.save_button));
 		} else {
@@ -54,7 +56,7 @@ public class DisplayNote extends AppCompatActivity {
 	}
 
 	public void edit_note(View view) {
-
+		RelativeLayout save, cancel;
 		Button bell = (Button) findViewById(R.id.save_button);
 		bell.setVisibility(View.VISIBLE);
 		Button bell2 = (Button) findViewById(R.id.delete_button);

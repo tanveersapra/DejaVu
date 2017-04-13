@@ -15,16 +15,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
 	private RecyclerView recyclerView;
 	private RecyclerView.Adapter adapter;
 	private RecyclerView.LayoutManager layoutManager;
+	public static ArrayList<String> head = new ArrayList<String>();
+	public static ArrayList<String> content = new ArrayList<String>();
+	public static ArrayList<String> ida = new ArrayList<String>();
+	public static ArrayList<Integer> type = new ArrayList<Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +41,22 @@ public class MainActivity extends AppCompatActivity {
 		this.registerForContextMenu(fab);
 		final SQLiteDatabase notedb = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
 		notedb.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
-		notedb.execSQL("create table if not exists alarm(id integer,  Date date, hour integer, minutes integer, foreign key(id) references base(id)on delete cascade);");
-		
+		notedb.execSQL("create table if not exists alarm(id integer,  Date date, hour integer, minutes integer, foreign key(id) references base(id) on delete cascade);");
+		try {
+			notedb.execSQL("delete from base  where id in (select id from alarm where date < date('now'));");
+		} catch (Exception e) {
+			Log.d("********SQLite Error", "onCreate: " + e.getMessage());
+		}
 		Cursor c = notedb.rawQuery("select heading, content, type,id from base;", null);
 		String[] Heading = new String[c.getCount()];
 		String[] Content = new String[c.getCount()];
 		int[] Type = new int[c.getCount()];
 		final String[] id = new String[c.getCount()];
+
+		head.clear();
+		content.clear();
+		ida.clear();
+		type.clear();
 		for (int i = 0; i < c.getCount(); i++) {
 			if (i == 0) {
 				c.moveToFirst();
@@ -52,11 +68,16 @@ public class MainActivity extends AppCompatActivity {
 			Content[i] = c.getString(1);
 			id[i] = c.getString(3);
 			Type[i] = c.getInt(2);
+			head.add(Heading[i]);
+			content.add(Content[i]);
+			ida.add(id[i]);
+			type.add(Type[i]);
+
 		}
 
 
 		recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-		adapter = new RecyclerAdapter(Heading, Content, Type, id, getApplicationContext());
+		adapter = new RecyclerAdapter(getApplicationContext());
 		layoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setHasFixedSize(true);
@@ -82,21 +103,32 @@ public class MainActivity extends AppCompatActivity {
 							@Override
 							public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
 								for (int position : reverseSortedPositions) {
-									String removableID=id[position];
-									notedb.execSQL("delete from base where id='"+removableID+"';");
+									String removableID = id[position];
+									notedb.execSQL("delete from base where id='" + removableID + "';");
+									head.remove(position);
+									content.remove(position);
+									ida.remove(position);
+									type.remove(position);
 									adapter.notifyItemRemoved(position);
 								}
 								adapter.notifyDataSetChanged();
+//								recyclerView.setAdapter(adapter);
+
 							}
 
 							@Override
 							public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
 								for (int position : reverseSortedPositions) {
-									String removableID=id[position];
-									notedb.execSQL("delete from base where id='"+removableID+"';");
+									String removableID = id[position];
+									notedb.execSQL("delete from base where id='" + removableID + "';");
+									head.remove(position);
+									content.remove(position);
+									ida.remove(position);
+									type.remove(position);
 									adapter.notifyItemRemoved(position);
 								}
 								adapter.notifyDataSetChanged();
+
 							}
 						});
 
@@ -181,20 +213,20 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 	}
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-                .setMessage("Are you sure?")
-                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+				.setMessage("Are you sure?")
+				.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).setNegativeButton("no", null).show();
-    }
+						Intent intent = new Intent(Intent.ACTION_MAIN);
+						intent.addCategory(Intent.CATEGORY_HOME);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						finish();
+					}
+				}).setNegativeButton("no", null).show();
+	}
 }

@@ -49,12 +49,15 @@ public class DisplayLocation extends AppCompatActivity {
         String d = i.getStringExtra("note_details");
         HeadView.setText(s);
         ContentView.setText(d);
-        HeadEdit.setText(s);
-        ContentEdit.setText(d);
+        //HeadEdit.setText(s);
+        //ContentEdit.setText(d);
+        HeadEdit.setHint(s);
+        ContentEdit.setHint(d);
+
 
         db = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
         db.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
-        db.execSQL("create table if not exists loc(id integer primary key, lat double, long double, foreign key(id) references base(id));");
+        db.execSQL("create table if not exists loc(id integer primary key, lat double, long double, foreign key(id) references base(id) on delete cascade);");
         try {
             Cursor c = db.rawQuery("select * from base natural join loc where heading='" + s + "' and content='" + d + "';", null);
             if (c.getCount() > 0) {
@@ -125,7 +128,7 @@ public class DisplayLocation extends AppCompatActivity {
 
         db = openOrCreateDatabase("Notes", MODE_PRIVATE, null);
         db.execSQL("create table if not exists base(id integer primary key autoincrement, heading text, content text, type integer);");
-        db.execSQL("create table if not exists loc(id integer primary key, lat double, long double, foreign key(id) references base(id));");
+        db.execSQL("create table if not exists loc(id integer primary key, lat double, long double, foreign key(id) references base(id) on delete cascade);");
         ContentValues val = new ContentValues();
         val.put("heading", HeadEdit.getText().toString());
         val.put("content", ContentEdit.getText().toString());

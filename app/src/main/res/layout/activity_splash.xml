@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#0099cc"
+             tools:context="app.com.example.android.locationreminder.Splash">
+
+	<!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+	<TextView
+		android:id="@+id/fullscreen_content"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:keepScreenOn="true"
+		android:text="@string/dummy_content"
+		android:textColor="#33b5e5"
+		android:textSize="50sp"
+		android:textStyle="bold"/>
+
+	<!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fitsSystemWindows="true">
+
+		<LinearLayout
+			android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:background="@color/primary">
+
+			<ImageView
+				android:id="@+id/splashscreen"
+				android:layout_width="121dp"
+				android:layout_height="252dp"
+				android:layout_gravity="center"
+				android:src="@drawable/ic_my_location_black_48dp"
+				/>
+
+			<TextView android:layout_width="fill_parent"
+		          android:layout_height="wrap_content"
+		          android:text="Deja Vu"
+				android:textSize="48dp"
+				      android:textColor="#f4f4"
+				android:gravity="center"/>
+
+			<TextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:fontFamily="sans-serif-condensed"
+				android:gravity="center"
+				android:text="&quot;I've been here before&quot;"
+				android:textColor="#FFF"
+				android:textSize="30dp"
+				android:textStyle="italic"/>
+
+	</LinearLayout>
+	</FrameLayout>
+
+</FrameLayout>

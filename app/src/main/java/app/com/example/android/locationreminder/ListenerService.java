@@ -17,7 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ListenerService extends Service {
+public class  ListenerService extends Service {
 
     public static final String BROADCAST_ACTION = "Hello World";
     private static final int TWO_MINUTES = 1000 * 60 * 2;

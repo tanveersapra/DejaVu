@@ -40,10 +40,8 @@
 		android:onClick="new_note"
 		android:src="@android:drawable/ic_input_add"
 		android:tint="?android:attr/colorBackground"
-		app:backgroundTint="@color/colorPrimary"
 		app:elevation="24dp"
-
 		app:fabSize="normal"
-		app:rippleColor="@android:color/holo_blue_bright" />
+		app:rippleColor="@color/accent"/>
 
 </android.support.design.widget.CoordinatorLayout>

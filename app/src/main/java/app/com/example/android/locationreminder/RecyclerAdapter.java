@@ -9,9 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.*;
+import java.util.ArrayList;
+
+import static app.com.example.android.locationreminder.R.id.note_summary;
 
 /**
  * Created by Navneet Jain on 4/2/2017.
@@ -19,17 +24,17 @@ import android.widget.Toast;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
 	Context context;
-	String[] note_names, note_summary;
-	int[] note_type;
-	String[] id;
+	ArrayList<String>note_names, note_summary;
+	ArrayList<Integer>note_type;
+	ArrayList<String> id;
 
 
-	public RecyclerAdapter(String[] note_names, String[] note_summary, int[] note_type, String[] id, Context con) {
+	public RecyclerAdapter( Context con) {
 		context = con;
-		this.note_names = note_names;
-		this.note_summary = note_summary;
-		this.note_type = note_type;
-		this.id = id;
+		this.note_names = MainActivity.head;
+		this.note_summary = MainActivity.content;
+		this.note_type=MainActivity.type;
+		this.id = MainActivity.ida;
 	}
 
 	@Override
@@ -41,8 +46,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
 	@Override
 	public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
-		holder.tx_note_name.setText(note_names[position]);
-		String cont = note_summary[position];
+		holder.tx_note_name.setText(note_names.get(position));
+		String cont = note_summary.get(position);
 		if (cont.length() > 30) {
 			cont = cont.substring(0, 30) + "...";
 		}
@@ -56,18 +61,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
 			}
 		});
+		if (note_type.get(position) == 1)
+			holder.imageView.setImageResource(R.drawable.ic_note_black_48dp);
+		else if (note_type.get(position) == 3)
+			holder.imageView.setImageResource(R.drawable.ic_my_location_black_48dp);
+		else
+			holder.imageView.setImageResource(R.drawable.ic_alarm_black_48dp);
+
 		holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				//Toast.makeText(v,"You clicked on a Item",Toast.LENGTH_SHORT).show();
 
 				//int point=recyclerView.getChildAdapterPosition(recyclerView.getFocusedChild());
-				String s = note_names[position];
-				String d = note_summary[position];
-				int type = note_type[position];
-				String identity = id[position];
+				String s = note_names.get(position);
+				String d = note_summary.get(position);
+				int type = note_type.get(position);
+				String identity = id.get(position);
 				Intent i;
 				if (type == 1) {
+
 					i = new Intent(context, DisplayNote.class);
 					i.putExtra("note_head", s);
 					i.putExtra("note_details", d);
@@ -95,15 +108,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
 	@Override
 	public int getItemCount() {
-		return note_names.length;
+		return note_names.size();
 	}
 
 	public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 		TextView tx_note_name, tx_note_summary;
 		RelativeLayout relativeLayout;
-
+		ImageView imageView;
 		public RecyclerViewHolder(View view) {
 			super(view);
+			imageView = (ImageView) view.findViewById(R.id.temo);
 			relativeLayout = (RelativeLayout) view.findViewById(R.id.rel_layout);
 			tx_note_name = (TextView) view.findViewById(R.id.note_name);
 			tx_note_summary = (TextView) view.findViewById(R.id.note_summary);

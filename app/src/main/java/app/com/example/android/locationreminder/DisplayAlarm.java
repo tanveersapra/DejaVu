@@ -101,7 +101,9 @@ public class DisplayAlarm extends AppCompatActivity {
 		d.setVisibility(View.VISIBLE);
 		TimePicker time = (TimePicker) findViewById(R.id.timePicker);
 		time.setVisibility(View.VISIBLE);
-		edu.setText(tu.getText().toString());
+		//edu.setText(tu.getText().toString());
+		edu.setHint(tu.getText().toString());
+
 		if (view.getId() == R.id.save_button)
 			flag = 1;
 	}
@@ -121,7 +123,7 @@ public class DisplayAlarm extends AppCompatActivity {
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
 		fab.setVisibility(View.VISIBLE);
 		EditText edu = (EditText) findViewById(R.id.note_header_edit);
-		edu.setVisibility(View.INVISIBLE);
+
 		TextView tu = (TextView) findViewById(R.id.note_header);
 		tu.setVisibility(View.VISIBLE);
 		TextView dateText = (TextView) findViewById(R.id.showDate);
@@ -162,8 +164,12 @@ public class DisplayAlarm extends AppCompatActivity {
 		String timeValue = hourOfDay + ":" + time.getMinute() + " " + AM_PM;
 		timeText.setText(timeValue);
 		dateText.setText(dbdate);
-		tu.setText(edu.getText().toString());
+		tu.setText(timeValue);
+		timeText.setVisibility(View.VISIBLE);
+		tu.setVisibility(View.VISIBLE);
+		dateText.setVisibility(View.VISIBLE);
 		String Contentheading = edu.getText().toString();
+		edu.setVisibility(View.INVISIBLE);
 		if (flag == 1) {
 
 
